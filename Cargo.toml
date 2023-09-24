@@ -68,6 +68,13 @@ mio = { version = "0.8", features = ["os-poll"], optional = true }
 signal-hook-mio = { version = "0.2.3", features = ["support-v0_8"], optional = true }
 
 #
+# WASM dependencies
+#
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+xterm-js-rs = {git = "https://github.com/TeyKey1/xterm-js-rs"}
+wasm-bindgen = "0.2.87"
+
+#
 # Dev dependencies (examples, ...)
 #
 [dev-dependencies]

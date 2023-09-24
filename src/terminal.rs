@@ -114,11 +114,17 @@ pub fn is_raw_mode_enabled() -> io::Result<bool> {
     {
         sys::is_raw_mode_enabled()
     }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        Ok(sys::is_raw_mode_enabled())
+    }
 }
 
 /// Enables raw mode.
 ///
 /// Please have a look at the [raw mode](./index.html#raw-mode) section.
+#[cfg(not(target_arch = "wasm32"))]
 pub fn enable_raw_mode() -> io::Result<()> {
     sys::enable_raw_mode()
 }
@@ -126,6 +132,7 @@ pub fn enable_raw_mode() -> io::Result<()> {
 /// Disables raw mode.
 ///
 /// Please have a look at the [raw mode](./index.html#raw-mode) section.
+#[cfg(not(target_arch = "wasm32"))]
 pub fn disable_raw_mode() -> io::Result<()> {
     sys::disable_raw_mode()
 }
@@ -133,9 +140,14 @@ pub fn disable_raw_mode() -> io::Result<()> {
 /// Returns the terminal size `(columns, rows)`.
 ///
 /// The top left cell is represented `(1, 1)`.
+#[cfg(not(target_arch = "wasm32"))]
 pub fn size() -> io::Result<(u16, u16)> {
     sys::size()
 }
+
+#[cfg(target_arch = "wasm32")]
+#[doc(inline)]
+pub use sys::size;
 
 #[derive(Debug)]
 pub struct WindowSize {
@@ -150,9 +162,14 @@ pub struct WindowSize {
 /// The width and height in pixels may not be reliably implemented or default to 0.
 /// For unix, https://man7.org/linux/man-pages/man4/tty_ioctl.4.html documents them as "unused".
 /// For windows it is not implemented.
+#[cfg(not(target_arch = "wasm32"))]
 pub fn window_size() -> io::Result<WindowSize> {
     sys::window_size()
 }
+
+#[cfg(target_arch = "wasm32")]
+#[doc(inline)]
+pub use sys::window_size;
 
 /// Disables line wrapping.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
